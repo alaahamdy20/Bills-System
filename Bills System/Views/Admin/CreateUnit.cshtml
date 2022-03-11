@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewData["Title"] = "CreateUnit";
+   // ViewData["Title"] = "CreateUnit";
 }
 <div class="container-fluid">
            
@@ -17,12 +17,12 @@
                                     </div>
                                     <div class="card-body">
                                         <div class="px-3">
-                                            <form class="form form-horizontal">
+                                            <form class="form form-horizontal" asp-action="CreateUnit" asp-controller="Admin" method="">
                                             
                                     <div class="form-group row">
                                                         <label class="col-md-3 label-control" for="projectinput9">Unit Name : </label>
                                                         <div class="col-md-9">
-                                                            <input type="text" id="projectinput9" class="form-control" name="Type">
+                                                            <input type="text" id="projectinput9" class="form-control" name="unit_name">
                                                         </div>
                                                     </div>
                                  
@@ -33,9 +33,17 @@
                                                     <div class="form-group row">
                                                         <label class="col-md-3 label-control" for="projectinput9">Notes: </label>
                                                         <div class="col-md-9">
-                                                            <textarea id="projectinput9" rows="5" class="form-control" name="comment"></textarea>
+                                                            <textarea id="projectinput9" rows="5" class="form-control" name="notes"></textarea>
                                                         </div>
                                                     </div>
+                                                     <div class="form-actions">
+                                                    <button type="button" class="btn btn-danger mr-1">
+                                                        <i class="icon-trash"></i> Cancel
+                                                    </button>
+                                                    <button type="submit" class="btn btn-success">
+                                                        <i class="icon-note"></i> Save
+                                                    </button>
+                                                </div>
                                                 </form></div>
                     
                                                 <div class="form-actions">
