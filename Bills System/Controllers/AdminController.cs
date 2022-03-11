@@ -11,10 +11,14 @@ namespace Bills_System.Controllers
 	public class AdminController : Controller
 	{
 		private readonly ICompanyRepository companyRepository;
+		private readonly ITypeRepository typeRepository;
+		private readonly IunitRepositroy unitRepository;
 
-		public AdminController(ICompanyRepository CompanyRepository)
+		public AdminController(ICompanyRepository CompanyRepository,ITypeRepository TypeRepository,IunitRepositroy UnitRepositroy)
 		{
 			companyRepository = CompanyRepository;
+			typeRepository = TypeRepository;
+			unitRepository = UnitRepositroy;
 		}
 		
 		#region Index
@@ -88,7 +92,6 @@ namespace Bills_System.Controllers
 
 		#region 1.3 Manage Units
 
-		//[Route("units")]
 		public IActionResult CreateUnit()
 		{
 			return View();
@@ -97,8 +100,15 @@ namespace Bills_System.Controllers
 		[ValidateAntiForgeryToken]
 		public IActionResult CreateUnit(Unit unit)
 		{
-			unitRepository.Add(unit);
-			return View();
+			if (!ModelState.IsValid)
+				return View(unit);
+			else
+			{
+				unitRepository.Add(unit);
+
+				return RedirectToAction(nameof(Index));
+
+			}
 		}
 		
 		#endregion

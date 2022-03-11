@@ -29,6 +29,7 @@ namespace Bills_System
             services.AddDbContext<ApplicationDBContext>(
                     options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddScoped<ICompanyRepository, CompanyRepository>();
+            services.AddScoped<ITypeRepository, TypeRepository>();
             services.AddScoped<IunitRepositroy, UnitRepositry >();
         }
 
