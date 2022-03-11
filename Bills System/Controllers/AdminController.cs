@@ -1,5 +1,6 @@
 ﻿using Bills_System.Data;
 using Bills_System.Models;
+using Bills_System.Repository;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 
@@ -7,11 +8,11 @@ namespace Bills_System.Controllers
 {
 	public class AdminController : Controller
 	{
-		private readonly ApplicationDBContext dBContext;
+		private readonly ICompanyRepository companyRepository;
 
-		public AdminController(ApplicationDBContext dBContext)
+		public AdminController(ICompanyRepository CompanyRepository)
 		{
-			this.dBContext = dBContext;
+			companyRepository = CompanyRepository;
 		}
 		
 		#region Index
@@ -23,15 +24,16 @@ namespace Bills_System.Controllers
 
         #region 1.1 Manage Company data
 
-        [Route("company_data")]
+        //[Route("company_data")]
 		public IActionResult CreateCompany()
 		{
 			return View();
 		}
 
+
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		[Route("company_data")]
+		//[Route("company_data")]
 		public IActionResult CreateCompany(Company company)
 		{
 			if (!ModelState.IsValid) 
@@ -46,13 +48,23 @@ namespace Bills_System.Controllers
 		[Route("species")]
 		public IActionResult CreateType()
 		{
+			ViewBag.Companies =  companyRepository.GetAll();
 			return View();
 		}
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public IActionResult CreateType(Company company)
 		{
-			return View(company);
+			ViewBag.Companies = companyRepository.GetAll();
+
+			if (!ModelState.IsValid)
+				return View(company);
+			else
+			{
+				companyRepository.Add(company);
+				return RedirectToAction(nameof(Index));
+
+			}
 		}
 		#endregion
 
@@ -133,35 +145,36 @@ namespace Bills_System.Controllers
 
 		#region 1.1 Remote
 
-		[HttpPost]
-		public IActionResult IsAlreadyExisted(string Name)
+
+		public IActionResult IsNameAvailble(string Name)
 		{
+			Company company = companyRepository.GetByName(Name);
 
-			return Json(IsNameAvailable(Name));
-
-		}
-
-		public bool IsNameAvailable(string Name)
-		{
-			
-			bool status;
-			Company company = dBContext.Companies.FirstOrDefault(c=>c.Name.ToLower() == Name); 
 			if (company != null)
 			{
-				//Already registered  
-				status = false;
-			}
-			else
-			{
-				//Available to use  
-				status = true;
-			}
+				return Json(false);
 
-
-			return status;
+			}
+			return Json(true);
 		}
 
+		
+
 		#endregion
+
+		#region 1.2 Remote
+
+		/*public IActionResult IsTypeExisted(string Name,int id)
+		{
+			Company company = dBContext.Companies.FirstOrDefault(c => c.Id == id);
+			company.Types.FirstOrDefault(t => t.Name.ToLower() == Name);
+			return View();
+		}
+		*/
+		#endregion
+
+
+
 
 	}
 }
