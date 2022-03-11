@@ -1,7 +1,9 @@
 ﻿using Bills_System.Data;
 using Bills_System.Models;
 using Bills_System.Repository;
+using Bills_System.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Linq;
 
 namespace Bills_System.Controllers
@@ -9,10 +11,15 @@ namespace Bills_System.Controllers
 	public class AdminController : Controller
 	{
 		private readonly ICompanyRepository companyRepository;
+		private readonly ITypeRepository typeRepository;
 
-		public AdminController(ICompanyRepository CompanyRepository)
+		public AdminController(
+			ICompanyRepository CompanyRepository,
+			ITypeRepository TypeRepository
+			)
 		{
 			companyRepository = CompanyRepository;
+			typeRepository = TypeRepository;
 		}
 		
 		#region Index
@@ -34,13 +41,17 @@ namespace Bills_System.Controllers
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		//[Route("company_data")]
-		public IActionResult CreateCompany(Company company)
+		public IActionResult CreateCompany(Company comapny)
 		{
 			if (!ModelState.IsValid) 
-				return View(company);
+				return View(comapny);
 			else
 			{
-				companyRepository.Add(company);
+
+				
+			
+
+				companyRepository.Add(comapny);
 				return RedirectToAction(nameof(Index));
 
 			}
@@ -49,23 +60,31 @@ namespace Bills_System.Controllers
 
 		#region 1.2 Manage Items
 
-		[Route("species")]
+		//[Route("species")]
 		public IActionResult CreateType()
 		{
-			ViewBag.Companies =  companyRepository.GetAll();
+			ViewBag.Companies = companyRepository.GetAll().Select(c => new SelectListItem() { Text = c.Name, Value = c.Name });
 			return View();
 		}
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public IActionResult CreateType(Company company)
+		public IActionResult CreateType(ComapnyTypesViewModel comapnyTypesViewModel)
 		{
-			ViewBag.Companies = companyRepository.GetAll();
+			ViewBag.Companies = companyRepository.GetAll().Select(c => new SelectListItem() { Text = c.Name, Value = c.Id.ToString() });
+		
 
 			if (!ModelState.IsValid)
-				return View(company);
+				return View(comapnyTypesViewModel);
 			else
 			{
-				companyRepository.Add(company);
+				Type type = new Type()
+				{
+					Name = comapnyTypesViewModel.Name,
+					Notes = comapnyTypesViewModel.Notes,
+					
+				};
+				type.Companies.Add(companyRepository.GetByName(comapnyTypesViewModel.ComapnyName));
+				typeRepository.Add(type);
 				return RedirectToAction(nameof(Index));
 
 			}
@@ -162,19 +181,26 @@ namespace Bills_System.Controllers
 			return Json(true);
 		}
 
-		
+
 
 		#endregion
 
 		#region 1.2 Remote
 
-		/*public IActionResult IsTypeExisted(string Name,int id)
+		public IActionResult IsTypeExisted(string Name,string ComapnyName)
 		{
-			Company company = dBContext.Companies.FirstOrDefault(c => c.Id == id);
-			company.Types.FirstOrDefault(t => t.Name.ToLower() == Name);
-			return View();
+			Company company = companyRepository.GetByName(ComapnyName);
+
+			Type type = company.Types.FirstOrDefault(t => t.Name.ToLower() == Name.ToLower());
+
+			if (type != null)
+			{
+				return Json(false);
+
+			}
+			return Json(true);
 		}
-		*/
+
 		#endregion
 
 

@@ -1,5 +1,6 @@
 ﻿using Bills_System.Data;
 using Bills_System.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -38,7 +39,7 @@ namespace Bills_System.Repository
 
 		public Company GetByName(string Name)
 		{
-			return _context.Companies.FirstOrDefault(c => c.Name.ToLower() == Name);
+			return _context.Companies.Include(c => c.Types).FirstOrDefault(c => c.Name.ToLower() == Name);
 
 		}
 

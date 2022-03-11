@@ -29,6 +29,7 @@ namespace Bills_System
             services.AddDbContext<ApplicationDBContext>(
                     options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddScoped<ICompanyRepository, CompanyRepository>();
+            services.AddScoped<ITypeRepository, TypeRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

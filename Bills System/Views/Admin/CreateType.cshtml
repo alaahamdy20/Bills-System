@@ -1,67 +1,82 @@
-﻿
+﻿@model ComapnyTypesViewModel
 @{
-    ViewData["Title"] = "CreateType";
+	ViewData["Title"] = "CreateType";
 }
 
 <div class="container-fluid">
-           
-                    <section id="horizontal-form-layouts">
-                   
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <div class="card-title-wrap bar-success">
-                                            <h4 class="card-title" id="horz-layout-basic">Species Data Form</h4>
-                                        </div>
-                                        <p class="mb-0">This is the basic horizontal form with labels on left and cost estimation form is the default position.</p>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="px-3">
-                                            <form class="form form-horizontal">
-                                                <div class="form-group row">
-                                                    <label class="col-md-3 label-control" for="projectinput7">Company Name: </label>
-                                                    <div class="col-md-9">
-                                                        <select id="projectinput7" name="budget" class="form-control">
-                                                            <option value="0" selected="" disabled="">choose from Companies</option>
-                                                            <option value="company1">Company 1</option>
-                                                            <option value="company2">company2</option>
-                                                        
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                    <div class="form-group row">
-                                                        <label class="col-md-3 label-control" for="projectinput9">Species Name : </label>
-                                                        <div class="col-md-9">
-                                                            <input type="text" id="projectinput9" class="form-control" name="Type">
-                                                        </div>
-                                                    </div>
-                                 
-                                   
-                                                        
-                                                      
-                    
-                                                    <div class="form-group row">
-                                                        <label class="col-md-3 label-control" for="projectinput9">Notes: </label>
-                                                        <div class="col-md-9">
-                                                            <textarea id="projectinput9" rows="5" class="form-control" name="comment"></textarea>
-                                                        </div>
-                                                    </div>
-                                                </form></div>
-                    
-                                                <div class="form-actions">
-                                                    <button type="button" class="btn btn-danger mr-1">
-                                                        <i class="icon-trash"></i> Cancel
-                                                    </button>
-                                                    <button type="button" class="btn btn-success">
-                                                        <i class="icon-note"></i> Save
-                                                    </button>
-                                                </div>
-                                            
-                                        </div>
-                                    
-                                </div>
-                            </div>
-                        </div></section>
-                  </div>
 
+	<section id="horizontal-form-layouts">
+
+		<div class="row">
+			<div class="col-md-12">
+				<div class="card">
+					<div class="card-header">
+						<div class="card-title-wrap bar-success">
+							<h4 class="card-title" id="horz-layout-basic">Species Data Form</h4>
+						</div>
+						<p class="mb-0">This is the basic horizontal form with labels on left and cost estimation form is the default position.</p>
+					</div>
+					<div class="card-body">
+						<div class="px-3">
+							<form method="post" class="form form-horizontal">
+								<div class="form-group row">
+									<label class="col-md-3 label-control" for="projectinput7">Company Name: </label>
+									<div class="col-md-9">
+										<select asp-for="ComapnyName" asp-items="ViewBag.Companies" class="form-control">
+											<option value="0" selected="" disabled="">choose from Companies</option>
+
+
+										</select>
+										<span asp-validation-for="ComapnyName" class="text-danger"></span>
+
+									</div>
+								</div>
+								<div class="form-group row">
+									<label class="col-md-3 label-control" for="projectinput9">Species Name : </label>
+									<div class="col-md-9">
+										<input class="form-control" asp-for="Name">
+										<span asp-validation-for="Name" class="text-danger"></span>
+
+									</div>
+								</div>
+
+
+
+
+
+								<div class="form-group row">
+									<label class="col-md-3 label-control" for="projectinput9">Notes: </label>
+									<div class="col-md-9">
+										<textarea rows="5" class="form-control" asp-for="Notes"></textarea>
+										<span asp-validation-for="Notes" class="text-danger"></span>
+
+									</div>
+								</div>
+								<div class="form-actions">
+									<button type="button" class="btn btn-danger mr-1">
+										<i class="icon-trash"></i> Cancel
+									</button>
+									<button type="submit" class="btn btn-success">
+										<i class="icon-note"></i> Save
+									</button>
+								</div>
+							</form>
+						</div>
+
+
+
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
+
+
+
+@section Scripts {
+    @{
+	await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
+}
