@@ -108,7 +108,6 @@ namespace Bills_System.Controllers
 
 		#region 1.4 Manage Categories
 
-		[Route("categories")]
 		public IActionResult CreateCategory()
 		{
 			return View();
@@ -202,6 +201,7 @@ namespace Bills_System.Controllers
 		}
 
 		#endregion
+
 
 
 
