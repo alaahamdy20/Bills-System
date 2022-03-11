@@ -11,5 +11,7 @@ namespace Bills_System.Data
 		}
 		public DbSet<Company> Companies { get; set; }
 		public DbSet<Type> Types { get; set; }
+		public DbSet<Unit> Units { get; set; }
+
 	}
 }

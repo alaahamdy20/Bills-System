@@ -9,10 +9,12 @@ namespace Bills_System.Controllers
 	public class AdminController : Controller
 	{
 		private readonly ICompanyRepository companyRepository;
+		private readonly IunitRepositroy  unitRepository;
 
-		public AdminController(ICompanyRepository CompanyRepository)
+		public AdminController(ICompanyRepository CompanyRepository ,IunitRepositroy iunitRepositroy)
 		{
 			companyRepository = CompanyRepository;
+			unitRepository = iunitRepositroy;
 		}
 		
 		#region Index
@@ -74,17 +76,19 @@ namespace Bills_System.Controllers
 
 		#region 1.3 Manage Units
 
-		[Route("units")]
+		//[Route("units")]
 		public IActionResult CreateUnit()
 		{
 			return View();
 		}
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public IActionResult CreateUnit(Company company)
+		public IActionResult CreateUnit(Unit unit)
 		{
-			return View(company);
+			unitRepository.Add(unit);
+			return View();
 		}
+		
 		#endregion
 
 		#region 1.4 Manage Categories
