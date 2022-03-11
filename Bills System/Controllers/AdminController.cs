@@ -39,7 +39,11 @@ namespace Bills_System.Controllers
 			if (!ModelState.IsValid) 
 				return View(company);
 			else
+			{
+				companyRepository.Add(company);
 				return RedirectToAction(nameof(Index));
+
+			}
 		}
 		#endregion
 
